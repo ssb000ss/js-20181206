@@ -15,6 +15,7 @@ export default class PhoneViewer {
 
     this._render();
   }
+
   _render() {
     let phone = this._phoneDetails;
 

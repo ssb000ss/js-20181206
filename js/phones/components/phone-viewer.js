@@ -2,6 +2,22 @@ import Component from '../../component.js';
 
 export default class PhoneViewer extends Component {
 
+  constructor({ element }) {
+    super({ element });
+
+    this._element.addEventListener('click', (event) => {
+      const button = event.target.closest('[data-element="back-button"]');
+
+      if (!button) {
+        return;
+      }
+
+      console.log('back');
+
+      this.emit('back');
+    });
+  }
+
   show(phoneDetails) {
     this._phoneDetails = phoneDetails;
 
@@ -16,8 +32,8 @@ export default class PhoneViewer extends Component {
     this._element.innerHTML = `
       <img class="phone" src="${ phone.images[0] }">
 
-      <button>Back</button>
-      <button>Add to basket</button>
+      <button data-element="back-button">Back</button>
+      <button data-element="add-button">Add to basket</button>
   
   
       <h1>${ phone.name }</h1>

@@ -1,13 +1,10 @@
-'use strict';
-
 import Component from '../../component.js';
 
 export default class PhoneCatalog extends Component {
-  constructor({ element, phones, onPhoneSelected }) {
+  constructor({ element, phones }) {
     super({ element });
 
     this._phones = phones;
-    this._onPhoneSelected = onPhoneSelected;
 
     this._render();
 
@@ -20,7 +17,7 @@ export default class PhoneCatalog extends Component {
 
       const phoneElement = phoneLink.closest('[data-element="phone"]');
 
-      this._onPhoneSelected(phoneElement.dataset.phoneId);
+      this.emit('phone-selected', phoneElement.dataset.id);
     });
   }
 

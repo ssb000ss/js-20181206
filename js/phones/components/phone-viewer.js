@@ -1,17 +1,11 @@
-export default class PhoneViewer {
-  constructor({ element }) {
-    this._element = element;
+import Component from '../../component.js';
 
-  }
-
-  hide() {
-    this._element.hidden = true;
-  }
+export default class PhoneViewer extends Component {
 
   show(phoneDetails) {
-    this._element.hidden = false;
-
     this._phoneDetails = phoneDetails;
+
+    super.show();
 
     this._render();
   }

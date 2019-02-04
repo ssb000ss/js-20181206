@@ -1,10 +1,15 @@
 
 
 const PhoneService = {
-  getAll(callback) {
+  getAll(callback, { query = '', orderBy = 'age' } = {}) {
     let url = 'https://mgrinko.github.io/js-20181206/phones/phones.json';
 
-    this._sendRequest(url, callback)
+    this._sendRequest(url, (phones) => {
+      const filteredPhones = this._filter(phones, query);
+      const sortedPhones = this._sort(filteredPhones, orderBy);
+
+      callback(sortedPhones);
+    });
   },
 
   getById(phoneId, callback) {
@@ -30,7 +35,21 @@ const PhoneService = {
 
       callback(data);
     };
-  }
+  },
+
+  _filter(phones, query) {
+    const normalizedQuery = query.toLowerCase();
+
+    return phones.filter((phone) => {
+      return phone.name.toLowerCase().includes(normalizedQuery);
+    });
+  },
+
+  _sort(phones, orderBy) {
+    return phones.sort((phoneA, phoneB) => {
+      return phoneA[orderBy] > phoneB[orderBy] ? 1 : -1
+    });
+  },
 };
 
 export default PhoneService;

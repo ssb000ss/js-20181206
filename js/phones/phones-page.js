@@ -64,6 +64,18 @@ export default class PhonesPage {
     this._filter = new Filter({
       element: this._element.querySelector('[data-component="filter"]'),
     });
+
+    this._filter.subscribe('query-changed', (query) => {
+      PhoneService.getAll((phones) => {
+        this._catalog.show(phones);
+      }, { query });
+    });
+
+    this._filter.subscribe('order-changed', (orderBy) => {
+      PhoneService.getAll((phones) => {
+        this._catalog.show(phones);
+      }, { orderBy });
+    });
   }
 
   _render() {

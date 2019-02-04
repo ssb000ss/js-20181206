@@ -25,10 +25,10 @@ export default class PhonesPage {
     });
 
     this._catalog.subscribe('phone-selected', (phoneId) => {
-      let phoneDetails = PhoneService.getById(phoneId);
-
-      this._catalog.hide();
-      this._viewer.show(phoneDetails);
+      PhoneService.getById(phoneId, (phoneDetails) => {
+        this._catalog.hide();
+        this._viewer.show(phoneDetails);
+      });
     });
 
     this._catalog.subscribe('phone-added', (phoneId) => {

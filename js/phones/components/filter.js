@@ -15,6 +15,16 @@ export default class Filter extends Component {
     });
   }
 
+  getCurrentData() {
+    let orderField = this._element.querySelector('[data-element="order-field"]');
+    let queryField = this._element.querySelector('[data-element="query-field"]');
+
+    return {
+      query: queryField.value,
+      orderBy: orderField.value,
+    };
+  }
+
   _render() {
     this._element.innerHTML = `
       <p>

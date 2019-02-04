@@ -1,40 +1,28 @@
 
 
 const PhoneService = {
-  getAll() {
+  getAll(callback) {
+    let url = 'https://mgrinko.github.io/js-20181206/phones/phones.json';
 
-    let xhr = new XMLHttpRequest();
-
-    xhr.open(
-      'GET',
-      'https://mgrinko.github.io/js-20181206/phones/phones.json',
-      false
-    );
-
-    xhr.send();
-
-    if (xhr.status !== 200) {
-      console.log(`Server error: ${ xhr.status } ${ xhr.statusText }`);
-      return [];
-    }
-
-    return JSON.parse(xhr.responseText);
+    this._sendRequest(url, callback)
   },
 
   getById(phoneId, callback) {
+    let url = `https://mgrinko.github.io/js-20181206/phones/${ phoneId }.json`;
+
+    this._sendRequest(url, callback);
+  },
+
+
+  _sendRequest(url, callback) {
     let xhr = new XMLHttpRequest();
 
-    xhr.open(
-      'GET',
-      `https://mgrinko.github.io/js-20181206/phones/${ phoneId }.json`,
-      true
-    );
-
+    xhr.open('GET', url, true);
     xhr.send();
 
     xhr.onload = () => {
       if (xhr.status !== 200) {
-        console.log(`Server error: ${ xhr.status } ${ xhr.statusText }`);
+        console.error(`Server error: ${ xhr.status } ${ xhr.statusText }`);
         return {};
       }
 
@@ -42,7 +30,7 @@ const PhoneService = {
 
       callback(data);
     };
-  },
+  }
 };
 
 export default PhoneService;

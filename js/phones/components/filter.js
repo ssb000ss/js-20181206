@@ -6,9 +6,15 @@ export default class Filter extends Component {
 
     this._render();
 
-    this.on('input', 'query-field', (event) => {
-      this.emit('query-changed', event.target.value);
-    });
+    const emitQueryChangedWithDeboune = _.debounce(
+      (event) => {
+        this.emit('query-changed', event.target.value);
+      },
+
+      500
+    );
+
+    this.on('input', 'query-field', emitQueryChangedWithDeboune);
 
     this.on('change', 'order-field', (event) => {
       this.emit('order-changed', event.target.value);

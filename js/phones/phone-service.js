@@ -1,7 +1,7 @@
 
 
 const PhoneService = {
-  getAll(callback, { query = '', orderBy = 'age' } = {}) {
+  getAll(callback, { query = '', orderBy = 'age', page = 1, perPage = 10 } = {}) {
     let url = 'https://mgrinko.github.io/js-20181206/phones/phones.json';
 
     this._sendRequest(url, (phones) => {

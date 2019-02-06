@@ -1,24 +1,33 @@
-export default class Filter {
-  constructor({ element }) {
-    this._element = element;
+import Component from "../../component.js";
 
-    this._render();
-  }
+export default class Filter extends Component {
+    constructor({element}) {
+        super(element);
 
-  _render() {
-    this._element.innerHTML = `
+        this._render();
+        this.on('input','query-field',()=>{
+            this.emit('query-changed', event.target.value);
+        });
+
+        this.on('change','order-field',()=>{
+            this.emit('order-changed', event.target.value);
+        })
+    }
+
+    _render() {
+        this._element.innerHTML = `
       <p>
         Search:
-        <input>
+        <input data-element="query-field">
       </p>
 
       <p>
         Sort by:
-        <select>
+        <select data-element="order-field">
           <option value="name">Alphabetical</option>
           <option value="age">Newest</option>
         </select>
       </p>
     `;
-  }
+    }
 }

@@ -234,17 +234,29 @@ const PhoneService = {
     xhr.send();
 
     if(xhr.status!==200){
-      console.log(xhr.status);
+      console.error(xhr.status);
       return [];
-
     }
 
-    const phones = JSON.parse(xhr.responseText);
-    return phones;
+    return JSON.parse(xhr.responseText);
   },
 
   getById(phoneId) {
-    return phoneDetails;
+      let xhr = new XMLHttpRequest();
+      xhr.open(
+          'GET',
+          `https://mgrinko.github.io/js-20181206/phones/${phoneId}.json`,
+          false
+      );
+
+      xhr.send();
+
+      if(xhr.status!==200){
+          console.error(xhr.status);
+          return [];
+      }
+
+      return JSON.parse(xhr.responseText);
   },
 };
 

@@ -5,14 +5,24 @@ export default class Filter extends Component {
         super({element});
 
         this._render();
-        this.on('input','query-field',(event)=>{
+        this.on('input', 'query-field', (event) => {
             this.emit('query-changed', event.target.value);
         });
 
-        this.on('change','order-field',(event)=>{
+        this.on('change', 'order-field', (event) => {
             console.log("order-changed");
             this.emit('order-changed', event.target.value);
         })
+    }
+
+    _getCurrentData() {
+        let orderField = this._element.querySelector('[data-element="order-field"]');
+        let queryField = this._element.querySelector('[data-element="query-field"]');
+
+        return {
+            query: queryField.value,
+            orderBy: orderField.value
+        }
     }
 
     _render() {

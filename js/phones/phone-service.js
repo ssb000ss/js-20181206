@@ -4,8 +4,8 @@ const PhoneService = {
 
 
         this._sendRequest(url, (phones) => {
-            const filteredPhones = this._filter(phones,query)
-            const sortedPhones = this._sort(filteredPhones,orderBy);
+            const filteredPhones = this._filter(phones, query);
+            const sortedPhones = this._sort(filteredPhones, orderBy);
             callback(sortedPhones);
         });
     },
@@ -43,9 +43,9 @@ const PhoneService = {
         })
     },
 
-    _sort(phones, ordeBy) {
+    _sort(phones, orderBy) {
         return phones.sort((phoneA, phoneB) => {
-            return phoneA[ordeBy] > phoneB[ordeBy] ? 1 : -1;
+            return phoneA[orderBy].toLowerCase() > phoneB[orderBy].toLowerCase() ? 1 : -1;
         });
     }
 };

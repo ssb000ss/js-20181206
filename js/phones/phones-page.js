@@ -5,6 +5,7 @@ import PhoneViewer from './components/phone-viewer.js';
 import ShoppingCart from './components/shopping-cart.js';
 import Filter from './components/filter.js';
 import PhoneService from './phone-service.js';
+import filter from "./components/filter.js";
 
 export default class PhonesPage {
     constructor({element}) {
@@ -16,15 +17,21 @@ export default class PhonesPage {
         this._initViewer();
         this._initShoppingCart();
         this._initFilter();
+
+        this._showPhones();
+
+
+    }
+
+    _showPhones() {
+        PhoneService.getAll((phones) => {
+            this._catalog.show(phones)
+        }, this._filter._getCurrentData());
     }
 
     _initCatalog() {
         this._catalog = new PhoneCatalog({
             element: this._element.querySelector('[data-component="phone-catalog"]')
-        });
-
-        PhoneService.getAll((phones) => {
-            this._catalog.show(phones);
         });
 
 
@@ -33,7 +40,7 @@ export default class PhonesPage {
                 phoneId,
                 (phoneDetails) => {
                     this._catalog.hide();
-                    this._viewer.show(phoneDetails);
+                    this._showPhones();
                 }
             );
         });
@@ -69,18 +76,12 @@ export default class PhonesPage {
             element: this._element.querySelector('[data-component="filter"]'),
         });
 
-        this._filter.subscribe('query-changed', (query) => {
-            PhoneService.getAll((phones) => {
-                    this._catalog.show(phones)
-                },
-                {query});
+        this._filter.subscribe('query-changed', () => {
+            this._showPhones();
         });
 
-        this._filter.subscribe('order-changed', (orderBy) => {
-            PhoneService.getAll((phones) => {
-                    this._catalog.show(phones);
-                },
-                {orderBy});
+        this._filter.subscribe('order-changed', () => {
+            this._showPhones();
         })
     }
 

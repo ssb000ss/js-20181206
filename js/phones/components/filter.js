@@ -2,14 +2,15 @@ import Component from "../../component.js";
 
 export default class Filter extends Component {
     constructor({element}) {
-        super(element);
+        super({element});
 
         this._render();
-        this.on('input','query-field',()=>{
+        this.on('input','query-field',(event)=>{
             this.emit('query-changed', event.target.value);
         });
 
-        this.on('change','order-field',()=>{
+        this.on('change','order-field',(event)=>{
+            console.log("order-changed");
             this.emit('order-changed', event.target.value);
         })
     }

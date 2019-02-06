@@ -37,8 +37,9 @@ const PhoneService = {
     },
 
     _filter(phones, query) {
+        let normalizeQuery = query.toLowerCase();
         return phones.filter((phone) => {
-            return phone.name.includes(query);
+            return phone.name.toLowerCase().includes(normalizeQuery);
         })
     },
 

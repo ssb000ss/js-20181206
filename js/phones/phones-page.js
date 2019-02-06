@@ -73,14 +73,14 @@ export default class PhonesPage {
             PhoneService.getAll((phones) => {
                     this._catalog.show(phones)
                 },
-                query);
+                {query});
         });
 
         this._filter.subscribe('order-changed', (orderBy) => {
             PhoneService.getAll((phones) => {
                     this._catalog.show(phones);
                 },
-                orderBy);
+                {orderBy});
         })
     }
 

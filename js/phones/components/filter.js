@@ -5,14 +5,14 @@ export default class Filter extends Component {
         super({element});
 
         this._render();
-        this.on('input', 'query-field', (event) => {
-            this.emit('query-changed', event.target.value);
-        });
+        this.on('input', 'query-field', _.debounce(
+            (event) => this.emit('query-changed', event.target.value)
+        , 500));
 
         this.on('change', 'order-field', (event) => {
             console.log("order-changed");
             this.emit('order-changed', event.target.value);
-        })
+        });
     }
 
     _getCurrentData() {

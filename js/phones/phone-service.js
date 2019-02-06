@@ -223,8 +223,24 @@ const phoneDetails = {
 };
 
 const PhoneService = {
-  getAll({ sortBy, query, page, perPage }) {
-    return phonesFromServer;
+  getAll() {
+    let xhr = new XMLHttpRequest();
+    xhr.open(
+        'GET',
+        'https://mgrinko.github.io/js-20181206/phones/phones.json',
+        false
+    );
+
+    xhr.send();
+
+    if(xhr.status!==200){
+      console.log(xhr.status);
+      return [];
+
+    }
+
+    const phones = JSON.parse(xhr.responseText);
+    return phones;
   },
 
   getById(phoneId) {
@@ -233,3 +249,4 @@ const PhoneService = {
 };
 
 export default PhoneService;
+

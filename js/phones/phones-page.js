@@ -20,15 +20,22 @@ export default class PhonesPage {
 
   _initCatalog() {
     this._catalog = new PhoneCatalog({
-      element: this._element.querySelector('[data-component="phone-catalog"]'),
-      phones: PhoneService.getAll(),
+      element: this._element.querySelector('[data-component="phone-catalog"]')
     });
 
-    this._catalog.subscribe('phone-selected', (phoneId) => {
-      let phoneDetails = PhoneService.getById(phoneId);
+    PhoneService.getAll((phones)=>{
+      this._catalog.show(phones);
+    });
 
-      this._catalog.hide();
-      this._viewer.show(phoneDetails);
+
+    this._catalog.subscribe('phone-selected', (phoneId) => {
+      PhoneService.getById(
+          phoneId,
+          (phoneDetails)=>{
+            this._catalog.hide();
+            this._viewer.show(phoneDetails);
+          }
+        );
     });
 
     this._catalog.subscribe('phone-added', (phoneId) => {

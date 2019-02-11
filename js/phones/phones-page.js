@@ -23,13 +23,10 @@ export default class PhonesPage {
 
     }
 
-    _showPhones() {
+    async _showPhones() {
         let filterData = this._filter._getCurrentData();
-        const phonesPromise = PhoneService.getAll(filterData);
-
-        phonesPromise.then((phones) => {
-            this._catalog.show(phones)
-        });
+        const phones = await PhoneService.getAll(filterData);
+        this._catalog.show(phones)
     }
 
     _initCatalog() {
@@ -38,13 +35,12 @@ export default class PhonesPage {
         });
 
 
-        this._catalog.subscribe('phone-selected', (phoneId) => {
-            const phoneDetailsPromise = PhoneService.getById(phoneId);
+        this._catalog.subscribe('phone-selected', async (phoneId) => {
+            const phoneDetails = await PhoneService.getById(phoneId);
+            this._catalog.hide();
+            console.dir(phoneDetails);
+            this._viewer.show(phoneDetails);
 
-            phoneDetailsPromise.then((data) => {
-                this._catalog.hide();
-                this._viewer.show(data);
-            });
         });
 
         this._catalog.subscribe('phone-added', (phoneId) => {

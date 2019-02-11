@@ -1,13 +1,10 @@
 const PhoneService = {
-    getAll({query = '', orderBy = 'age'} = {}) {
+    async getAll({query = '', orderBy = 'age'} = {}) {
         let url = "https://mgrinko.github.io/js-20181206/phones/phones.json";
 
-        const phonesPromise = this._sendRequest(url);
-        return phonesPromise.then((phones) => {
-            const filteredPhones = this._filter(phones, query);
-            const sortedPhones = this._sort(filteredPhones, orderBy);
-            return sortedPhones;
-        });
+        const phones = await this._sendRequest(url);
+        const filteredPhones = this._filter(phones, query);
+        return this._sort(filteredPhones, orderBy);
     },
 
 
@@ -17,23 +14,8 @@ const PhoneService = {
     },
 
     _sendRequest(url) {
-        const instructionFn = (resolve, reject) => {
-            let xhr = new XMLHttpRequest();
-            xhr.open('GET', url, true);
-            xhr.send();
-            xhr.onload = () => {
-                if (xhr.status !== 200) {
-                    console.error(xhr.statusText);
-                    reject();
-                    return {};
-                }
-                const data = JSON.parse(xhr.responseText);
-                resolve(data);
-            }
-        };
-
-        return new Promise(instructionFn);
-
+        return fetch(url)
+            .then(response => response.json());
     },
 
     _filter(phones, query) {

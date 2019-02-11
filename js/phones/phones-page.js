@@ -24,9 +24,12 @@ export default class PhonesPage {
     }
 
     _showPhones() {
-        PhoneService.getAll((phones) => {
+        let filterData = this._filter._getCurrentData();
+        const phonesPromise = PhoneService.getAll(filterData);
+
+        phonesPromise.then((phones) => {
             this._catalog.show(phones)
-        }, this._filter._getCurrentData());
+        });
     }
 
     _initCatalog() {
@@ -36,13 +39,12 @@ export default class PhonesPage {
 
 
         this._catalog.subscribe('phone-selected', (phoneId) => {
-            PhoneService.getById(
-                phoneId,
-                () => {
-                    this._catalog.hide();
-                    this._showPhones();
-                }
-            );
+            const phoneDetailsPromise = PhoneService.getById(phoneId);
+
+            phoneDetailsPromise.then((data) => {
+                this._catalog.hide();
+                this._viewer.show(data);
+            });
         });
 
         this._catalog.subscribe('phone-added', (phoneId) => {

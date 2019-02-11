@@ -1,38 +1,38 @@
 const PhoneService = {
-    getAll(callback, {query = '', orderBy = 'age'} = {}) {
+    getAll({query = '', orderBy = 'age'} = {}) {
         let url = "https://mgrinko.github.io/js-20181206/phones/phones.json";
 
-
-        this._sendRequest(url, (phones) => {
+        const phonesPromise = this._sendRequest(url);
+        return phonesPromise.then((phones) => {
             const filteredPhones = this._filter(phones, query);
             const sortedPhones = this._sort(filteredPhones, orderBy);
-            callback(sortedPhones);
+            return sortedPhones;
         });
     },
 
 
-    getById(phoneId, callback) {
+    getById(phoneId) {
         let url = `https://mgrinko.github.io/js-20181206/phones/${phoneId}.json`;
-        this._sendRequest(url, callback);
+        return this._sendRequest(url);
     },
 
-    _sendRequest(url, callback) {
-        let xhr = new XMLHttpRequest();
-        xhr.open(
-            'GET',
-            url,
-            true
-        );
-
-        xhr.send();
-        xhr.onload = () => {
-            if (xhr.status !== 200) {
-                console.error(xhr.statusText);
-                return {};
+    _sendRequest(url) {
+        const instructionFn = (resolve, reject) => {
+            let xhr = new XMLHttpRequest();
+            xhr.open('GET', url, true);
+            xhr.send();
+            xhr.onload = () => {
+                if (xhr.status !== 200) {
+                    console.error(xhr.statusText);
+                    reject();
+                    return {};
+                }
+                const data = JSON.parse(xhr.responseText);
+                resolve(data);
             }
-            const data = JSON.parse(xhr.responseText);
-            callback(data);
-        }
+        };
+
+        return new Promise(instructionFn);
 
     },
 
